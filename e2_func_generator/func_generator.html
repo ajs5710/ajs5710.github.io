@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<title></title>
+		<style>
+			.flex-container {
+				display: flex;
+			}
+
+			.flex-container > div {
+				background-color: #f1f1f1;
+				margin: 10px;
+				padding: 20px;
+				font-size: 30px;
+			}
+
+
+			mark {
+				font-weight: bold;
+			}
+
+			mark.marked {
+
+			}
+
+			mark:not(.marked) {
+				background: transparent;
+			}
+
+		</style>
+	</head>
+	<body>
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+		<script src="e2_templater.js"></script>
+		
+		<!-- TODO: should add a global settings option to allow editing of e2_types -->
+		<div class="flex-container">
+			<div>
+				<textarea id="e2_input"></textarea>
+				
+				<div>
+					<pre><code id="parse_preview"></code></pre>
+				</div>  
+				
+				<div id="groups">
+				</div>
+			</div>
+			
+			<div>
+				<pre><code id="e2_output">hello?</code></pre>
+			</div>  
+		</div>
+
+	</body>
+</html>
