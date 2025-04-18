@@ -81,25 +81,29 @@
           },
 
           init: function () {
-            // Reference to the entity
+            this.el.setAttribute('position', {
+              x: 0,
+              y: this.data.altitude - camAltitude,
+              z: 0
+            })
+
             this.el.setAttribute('gps-new-entity-place', {
               latitude: this.data.latitude,
               longitude: this.data.longitude
             });
-
-            // Set the fixed altitude
-            this.el.object3D.position.y = this.data.altitude - camAltitude;
           },
 
           update: function () {
-            // Update the gps-entity-place position if the latitude or longitude changes
+            this.el.setAttribute('position', {
+              x: 0,
+              y: this.data.altitude - camAltitude,
+              z: 0
+            })
+
             this.el.setAttribute('gps-new-entity-place', {
                 latitude: this.data.latitude,
                 longitude: this.data.longitude
             });
-
-            // Update the fixed altitude
-            this.el.object3D.position.y = this.data.altitude - camAltitude;
           }
         });
 
@@ -117,6 +121,7 @@
             model.setAttribute('fixed-altitude-gps-place', `latitude: ${point.location.lat}; longitude: ${point.location.lng}; altitude: ${point.location.alt}`);
             model.setAttribute('geometry', 'primitive: sphere');
             model.setAttribute('material', `color: ${point.color}`);
+            model.setAttribute('position', '0 10 0');
             model.setAttribute('scale', '10 10 10');
             model.setAttribute('look-at', '[gps-new-camera]'); 
             
