@@ -7,22 +7,77 @@
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/3.4.5/three.js/build/ar-threex-location-only.js'></script>
     <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/3.4.5/aframe/build/aframe-ar.js'></script>
+
+    <script>
+      window.onload = () => {
+        let points = staticLoadPlaces();
+          renderPlaces(places);
+        };
+        
+        function staticLoadPlaces() {
+          return [
+            {
+              name: 'house',
+              color: 'green',
+              location: {
+                lat: 41.8377295,
+                lng: -87.6562099,
+              }
+            },
+            {
+              name: 'test',
+              color: 'red',
+              location: {
+                lat: 41.8377295,
+                lng: -87.6562099,
+              }
+            },
+            {
+              name: 'maria's',
+              color: 'blue',
+              location: {
+                lat: 41.8379652,
+                lng: -87.6513216,
+              }
+            },
+            {
+              name: 'navy pier',
+              color: 'blue',
+              location: {
+                lat: 41.8412918,
+                lng: -87.6242473,
+              }
+            },
+          ];
+        }
+
+        // <a-entity material='color: red' geometry='primitive: box' gps-new-entity-place="latitude: <add-your-latitude>; longitude: <add-your-longitude>" scale="10 10 10"></a-entity>
+        // <a-entity material="color: red" geometry="primitive: box" gps-new-entity-place="latitude: 41.8377295; longitude: -87.6562099; position: 0 10 0" scale="10 10 10"></a-entity>
+        function renderPlaces(places) {
+          let scene = document.querySelector('a-scene');
+          
+          points.forEach((point) => {
+            let latitude = place.location.lat;
+            let longitude = place.location.lng;
+            
+            let model = document.createElement('a-entity');
+            model.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude};`);
+            model.setAttribute('geometry', 'primitive: box');
+            model.setAttribute('rotation', '0 90 0');
+            model.setAttribute('scale', '10 10 10');
+            
+            model.addEventListener('loaded', () => {
+              window.dispatchEvent(new CustomEvent('gps-entity-place-loaded'))
+            });
+            
+            scene.appendChild(model);
+          });
+        }
+    </script>
   </head>
   <body>
-    <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false' renderer='antialias: true; alpha: true'>
-      <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
-<!-- my house -->
-      <a-entity material='color: green' geometry='primitive: box' gps-new-entity-place="latitude: 41.8377295; longitude: -87.6562099" scale="10 10 10"></a-entity>
-<!-- testing object -->
-      <a-entity material='color: red' geometry='primitive: box' gps-new-entity-place="latitude: 41.8377295; longitude: -87.6562099; position: 0 10 0" scale="10 10 10"></a-entity>
-<!-- maria's -->
-      <a-entity material='color: blue' geometry='primitive: box' gps-new-entity-place="latitude: 41.8379652; longitude: -87.6513216" scale="10 10 10"></a-entity>
-<!-- navy pier -->
-      <a-entity material='color: blue' geometry='primitive: box' gps-new-entity-place="latitude: 41.8412918; longitude: -87.6242473" scale="10 10 10"></a-entity>
+    <a-scene id='world-scene' vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false' renderer='antialias: true; alpha: true'>
+      <a-camera id='world-camera' gps-new-camera='gpsMinDistance: 5'></a-camera>
     </a-scene>
   </body>
 </html>
-
-<!-- my house 41.8378914,-87.6559226 -->
-<!-- marias 41.8379652,-87.6513216 -->
-<!-- navy pier 41.8412918,-87.6242473 -->
