@@ -10,8 +10,6 @@
 
     <script>
       window.onload = () => {
-        let camera = $("#world-camera");
-        
         let points = staticLoadPlaces();
           renderPlaces(points);
         };
@@ -59,7 +57,8 @@
         // <a-entity material='color: red' geometry='primitive: box' gps-new-entity-place="latitude: <add-your-latitude>; longitude: <add-your-longitude>" scale="10 10 10"></a-entity>
         // <a-entity material="color: red" geometry="primitive: box" gps-new-entity-place="latitude: 41.8377295; longitude: -87.6562099; position: 0 10 0" scale="10 10 10"></a-entity>
         function renderPlaces(points) {
-          let scene = document.querySelector('a-scene');
+          let scene = document.getElementById("world-scene");
+          let camera = document.getElementById("world-camera");
 
           let camAltitude = camera.getAttribute("position").y;
           alert(camAltitude);
