@@ -10,6 +10,8 @@
 
     <script>
       window.onload = () => {
+        let camera = $("#world-camera");
+        
         let points = staticLoadPlaces();
           renderPlaces(points);
         };
@@ -21,7 +23,8 @@
               color: 'green',
               location: {
                 lat: 41.8377295,
-                lng: -87.6562099
+                lng: -87.6562099,
+                alt: 182
               }
             },
             // {
@@ -37,7 +40,8 @@
               color: 'blue',
               location: {
                 lat: 41.8379652,
-                lng: -87.6513216
+                lng: -87.6513216,
+                alt: 182
               }
             },
             {
@@ -45,7 +49,8 @@
               color: 'blue',
               location: {
                 lat: 41.8412918,
-                lng: -87.6242473
+                lng: -87.6242473,
+                alt: 182
               }
             }
           ];
@@ -55,12 +60,15 @@
         // <a-entity material="color: red" geometry="primitive: box" gps-new-entity-place="latitude: 41.8377295; longitude: -87.6562099; position: 0 10 0" scale="10 10 10"></a-entity>
         function renderPlaces(points) {
           let scene = document.querySelector('a-scene');
-          
+
+          let camAltitude = camera.getAttribute("position").y;
+          alert(camAltitude);
           points.forEach((point) => {            
             let model = document.createElement('a-entity');
             model.setAttribute('gps-new-entity-place', `latitude: ${point.location.lat}; longitude: ${point.location.lng};`);
-            model.setAttribute('geometry', 'primitive: torus');
+            model.setAttribute('geometry', 'primitive: sphere');
             model.setAttribute('material', `color: ${point.color}`);
+            model.setAttribute('position', `0 ${point.location.alt - camAltitude} 0`);
             model.setAttribute('rotation', '0 90 0');
             model.setAttribute('scale', '10 10 10');
             model.setAttribute('look-at', '[gps-new-camera]'); 
