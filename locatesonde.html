@@ -59,10 +59,11 @@
           points.forEach((point) => {            
             let model = document.createElement('a-entity');
             model.setAttribute('gps-new-entity-place', `latitude: ${point.location.lat}; longitude: ${point.location.lng};`);
-            model.setAttribute('geometry', 'primitive: box');
+            model.setAttribute('geometry', 'primitive: torus');
             model.setAttribute('material', `color: ${point.color}`);
             model.setAttribute('rotation', '0 45 0');
             model.setAttribute('scale', '10 10 10');
+            model.setAttribute('look-at', '[gps-new-camera]'); 
             
             model.addEventListener('loaded', () => {
               window.dispatchEvent(new CustomEvent('gps-entity-place-loaded'))
