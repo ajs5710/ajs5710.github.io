@@ -13,6 +13,25 @@
         let points = staticLoadPlaces();
           renderPlaces(points);
         };
+
+        // has to be a better way to do this but I'm not seeing it
+        // the altitude in meters // default to ~altitude of chicago
+        let camAltitude = 180;
+        let setCamAltitude = function(){
+          navigator.geolocation.getCurrentPosition(function(coords){
+            camAltitude = coords.altitude;
+          });
+        }
+        // update the stored height of the camera every so often
+        setInterval(setCamAltitude, 10000);
+
+        // const getCoords = async () => {
+        //   const pos = await new Promise((resolve, reject) => {
+        //     navigator.geolocation.getCurrentPosition(resolve, reject);
+        //   });
+          
+        //   return pos.coords;
+        // };
         
         function staticLoadPlaces() {
           return [
@@ -69,18 +88,18 @@
             });
 
             // Set the fixed altitude
-            this.el.object3D.position.y = this.data.altitude;
+            this.el.object3D.position.y = this.data.altitude - camAltitude;
           },
 
           update: function () {
-          // Update the gps-entity-place position if the latitude or longitude changes
-          this.el.setAttribute('gps-new-entity-place', {
-              latitude: this.data.latitude,
-              longitude: this.data.longitude
-          });
+            // Update the gps-entity-place position if the latitude or longitude changes
+            this.el.setAttribute('gps-new-entity-place', {
+                latitude: this.data.latitude,
+                longitude: this.data.longitude
+            });
 
-          // Update the fixed altitude
-          this.el.object3D.position.y = this.data.altitude;
+            // Update the fixed altitude
+            this.el.object3D.position.y = this.data.altitude - camAltitude;
           }
         });
 
@@ -108,14 +127,6 @@
             scene.appendChild(model);
           });
         }
-
-        const getCoords = async () => {
-          const pos = await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
-          });
-          
-          return pos.coords;
-        };
 
         // const coords = await getCoords();
     </script>
