@@ -11,7 +11,7 @@
     <script>
       window.onload = () => {
         let points = staticLoadPlaces();
-          renderPlaces(places);
+          renderPlaces(points);
         };
         
         function staticLoadPlaces() {
@@ -53,7 +53,7 @@
 
         // <a-entity material='color: red' geometry='primitive: box' gps-new-entity-place="latitude: <add-your-latitude>; longitude: <add-your-longitude>" scale="10 10 10"></a-entity>
         // <a-entity material="color: red" geometry="primitive: box" gps-new-entity-place="latitude: 41.8377295; longitude: -87.6562099; position: 0 10 0" scale="10 10 10"></a-entity>
-        function renderPlaces(places) {
+        function renderPlaces(points) {
           let scene = document.querySelector('a-scene');
           
           points.forEach((point) => {
