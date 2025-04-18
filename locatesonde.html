@@ -57,8 +57,8 @@
           let scene = document.querySelector('a-scene');
           
           points.forEach((point) => {
-            let latitude = place.location.lat;
-            let longitude = place.location.lng;
+            let latitude = point.location.lat;
+            let longitude = point.location.lng;
             
             let model = document.createElement('a-entity');
             model.setAttribute('gps-new-entity-place', `latitude: ${latitude}; longitude: ${longitude};`);
