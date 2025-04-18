@@ -54,8 +54,40 @@
           ];
         }
 
+        AFRAME.registerComponent('fixed-altitude-gps-place', {
+          schema: {
+            latitude: { type: 'number', default: 0 },
+            longitude: { type: 'number', default: 0 },
+            altitude: { type: 'number', default: 0 } // Fixed altitude in meters
+          },
+
+          init: function () {
+            // Reference to the entity
+            this.el.setAttribute('gps-entity-place', {
+              latitude: this.data.latitude,
+              longitude: this.data.longitude
+            }
+          );
+
+          // Set the fixed altitude
+          this.el.object3D.position.y = this.data.altitude;
+          },
+
+          update: function () {
+          // Update the gps-entity-place position if the latitude or longitude changes
+          this.el.setAttribute('gps-entity-place', {
+              latitude: this.data.latitude,
+              longitude: this.data.longitude
+          });
+
+          // Update the fixed altitude
+          this.el.object3D.position.y = this.data.altitude;
+          }
+        });
+
         // <a-entity material='color: red' geometry='primitive: box' gps-new-entity-place="latitude: <add-your-latitude>; longitude: <add-your-longitude>" scale="10 10 10"></a-entity>
         // <a-entity material="color: red" geometry="primitive: box" gps-new-entity-place="latitude: 41.8377295; longitude: -87.6562099; position: 0 10 0" scale="10 10 10"></a-entity>
+        // <a-entity fixed-altitude-gps-place="latitude: 37.7749; longitude: -122.4194; altitude: 100" geometry="primitive: box; height: 5; width: 5; depth: 5" material="color: red"></a-entity>
         function renderPlaces(points) {
           let scene = document.getElementById("world-scene");
           let camera = document.getElementById("world-camera");
@@ -64,20 +96,29 @@
           alert(camAltitude);
           points.forEach((point) => {            
             let model = document.createElement('a-entity');
-            model.setAttribute('gps-entity-place', `latitude: ${point.location.lat}; longitude: ${point.location.lng};`);
+            model.setAttribute('fixed-altitude-gps-place', `latitude: ${point.location.lat}; longitude: ${point.location.lng}; altitude: ${point.location.alt}`);
             model.setAttribute('geometry', 'primitive: sphere');
             model.setAttribute('material', `color: ${point.color}`);
-            model.setAttribute('position', `0 ${point.location.alt - camAltitude} 0`);
             model.setAttribute('scale', '10 10 10');
             model.setAttribute('look-at', '[gps-new-camera]'); 
             
             model.addEventListener('loaded', () => {
-              window.dispatchEvent(new CustomEvent('gps-entity-place-loaded'))
+              window.dispatchEvent(new CustomEvent('gps-new-entity-place-loaded'))
             });
             
             scene.appendChild(model);
           });
         }
+
+        const getCoords = async () => {
+          const pos = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+          });
+          
+          return pos.coords;
+        };
+
+        // const coords = await getCoords();
     </script>
   </head>
   <body>
