@@ -81,11 +81,7 @@
           },
 
           init: function () {
-            this.el.setAttribute('position', {
-              x: 0,
-              y: this.data.altitude - camAltitude,
-              z: 0
-            })
+            this.el.getAttribute('position').y = this.data.altitude - camAltitude;
 
             this.el.setAttribute('gps-new-entity-place', {
               latitude: this.data.latitude,
@@ -94,11 +90,7 @@
           },
 
           update: function () {
-            this.el.setAttribute('position', {
-              x: 0,
-              y: this.data.altitude - camAltitude,
-              z: 0
-            })
+            this.el.getAttribute('position').y = this.data.altitude - camAltitude;
 
             this.el.setAttribute('gps-new-entity-place', {
                 latitude: this.data.latitude,
